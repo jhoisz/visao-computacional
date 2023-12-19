@@ -16,8 +16,22 @@ def orbDescriptor(path1, path2):
     matches = bf.match(descriptors1, descriptors2)
     matches = sorted(matches, key=lambda x: x.distance)
 
-    img_matches = cv.drawMatches(img1, keypoints1, img2, keypoints2, matches, None, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    points1 = np.float32([keypoints1[m.queryIdx].pt for m in matches])
+    points2 = np.float32([keypoints2[m.trainIdx].pt for m in matches])
 
-    cv.imwrite('orb_matches.jpg',img_matches)
-    plt.imshow(img_matches), plt.title("ORB Descriptor"), plt.show()
+    fundamental_matrix, mask = cv.findFundamentalMat(points1, points2, cv.FM_RANSAC)
+
+    img_matches = np.zeros((img1.shape[0], img1.shape[1]), dtype=np.uint8)
+    img_matches[:img1.shape[0], :img1.shape[1]] = img1
+
+    for i in range(points1.shape[0]):
+        if mask[i] != 0:
+            color = tuple(np.random.randint(0, 255, 3).tolist())
+            pt1 = tuple(map(int, points1[i]))
+            pt2 = tuple(map(int, points2[i]))
+            cv.line(img_matches, pt1, pt2, color, 1)
+
+    cv.imshow('Matching Points', img_matches)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 
