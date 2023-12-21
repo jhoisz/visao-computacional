@@ -34,9 +34,13 @@ def comparison(path):
 
     img[dst>0.01*dst.max()] = [0,0,255]
 
-    points_of_interest = np.argwhere(img == [0,0,255])
+    # Inicialize o objeto de detector de pontos de interesse
+    harris_detector = cv.FastFeatureDetector_create()
 
-    qtd_pontos_harris = len(points_of_interest)
+    # Encontre os pontos de interesse usando o detector de Harris
+    keypoints = harris_detector.detect(img, None)
+
+    qtd_pontos_harris = len(keypoints)
     print(qtd_pontos_harris)
     cv.imshow('HARRIS', img)
 

@@ -4,13 +4,14 @@ from matplotlib import pyplot as plt
 
 def orbDetector(path):
     # Leitura e conversão da imagem para escala de cinza
-    img = cv.imread(path, cv.IMREAD_GRAYSCALE)
+    img = cv.imread(path)
+    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
     # Criação do detector ORB
-    orb = cv.ORB_create()
+    orb = cv.ORB_create(nfeatures =300)
 
      # Detecção dos pontos de interesse
-    kp = orb.detect(img,None)
+    kp = orb.detect(gray,None)
 
     # Cálcuo dos descritores
     # kp, des = orb.compute(img, kp)

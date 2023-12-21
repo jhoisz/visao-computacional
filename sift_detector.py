@@ -13,7 +13,7 @@ def siftDetector(path):
     kp = sift.detect(gray,None)
 
     # Desenho dos pontos de interesse na imagem
-    img=cv.drawKeypoints(gray,kp,img)
+    img=cv.drawKeypoints(img,kp,None, color=(255,0,0))
     # img= cv.drawKeypoints(gray,kp,img,flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
     # cv.imwrite ( 'sift_keypoints.jpg' ,img)
 
